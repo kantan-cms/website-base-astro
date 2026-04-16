@@ -1,0 +1,50 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "project_id"
+        required: true
+      cms_url:
+        description: "cms_url"
+        required: false
+
+env:
+  CMS_API_KEY: ${{ secrets.CMS_API_KEY }}
+  PROJECT_ID: ${{ github.event.inputs.project_id }}
+  CMS_BASE_URL: ${{ github.event.inputs.cms_url }}
+  PUBLIC_CMS_BASE_URL: ${{ github.event.inputs.cms_url }}
+  KANTAN_REQUIRED_COLLECTION_IDS: "8745df11-fd58-45a0-8b03-8d67aa9f4456"
+  PUBLIC_POST_COLLECTION_ID: "8745df11-fd58-45a0-8b03-8d67aa9f4456"
+  KANTAN_STORAGE_PATH: "/tmp"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch data from Kantan CMS
+        run: bash ./build.sh
+
+      - name: Export static site
+        run: bash ./scripts/zip-and-export.sh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7
