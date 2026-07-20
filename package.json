@@ -16,10 +16,12 @@
     "cms:export": "bash scripts/zip-and-export.sh"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "archiver": "^7.0.1",
-    "astro": "^6.1.7",
-    "axios": "^1.12.2",
-    "dotenv": "^17.2.2"
+    "astro": "^7.1.1",
+    "axios": "^1.18.1",
+    "dotenv": "^17.2.2",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@types/archiver": "^6.0.3",
