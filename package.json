@@ -16,6 +16,7 @@
     "cms:export": "bash scripts/zip-and-export.sh"
   },
   "dependencies": {
+    "@lucide/astro": "^1.25.0",
     "@tailwindcss/vite": "^4.3.3",
     "archiver": "^7.0.1",
     "astro": "^7.1.1",
