@@ -1,0 +1,157 @@
+/*
+ * Article / long-form markdown styles.
+ *
+ * The CMS stores an entry's body as markdown; Astro compiles it to plain HTML
+ * (<h2>, <p>, <ul>, <blockquote>, ...) with NO classes. Tailwind's preflight
+ * reset then strips the browser defaults, so that HTML renders as unstyled
+ * runs of text. This stylesheet restyles it.
+ *
+ * Scope: everything lives under `.article`, so wrap the rendered body in
+ * `<div class="article">...</div>` (or `<article class="article">`). Nothing
+ * here leaks onto the rest of the page.
+ *
+ * It is a static file in public/, linked once from Layout.astro, so it is not
+ * subject to Astro's per-component <style> scoping — it DOES reach the compiled
+ * markdown (unlike a scoped `.prose` block, which cannot).
+ *
+ * Colours reference the Tailwind v4 @theme tokens (--color-primary, etc.) that
+ * the generator writes into global.css, with fallbacks so the file also works
+ * standalone in the scaffold.
+ */
+
+.article {
+  --article-ink: #1f2937;        /* body text */
+  --article-heading: var(--color-primary, #111827);
+  --article-link: var(--color-secondary, #2563eb);
+  --article-border: #e5e7eb;
+  --article-muted: #6b7280;
+  --article-code-bg: #f3f4f6;
+
+  color: var(--article-ink);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Headings ---------------------------------------------------------------- */
+.article h1,
+.article h2,
+.article h3,
+.article h4,
+.article h5,
+.article h6 {
+  color: var(--article-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  scroll-margin-top: 5rem;
+}
+.article h1 { font-size: 2rem; }
+.article h2 { font-size: 1.6rem; }
+.article h3 { font-size: 1.3rem; }
+.article h4 { font-size: 1.125rem; }
+.article h5,
+.article h6 { font-size: 1rem; }
+.article > :first-child { margin-top: 0; }
+
+/* Text blocks ------------------------------------------------------------- */
+.article p,
+.article ul,
+.article ol,
+.article blockquote,
+.article pre,
+.article table {
+  margin-top: 0;
+  margin-bottom: 1.25em;
+}
+
+.article a {
+  color: var(--article-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+.article a:hover { opacity: 0.8; }
+
+.article strong { font-weight: 700; color: inherit; }
+.article em { font-style: italic; }
+
+/* Lists ------------------------------------------------------------------- */
+.article ul,
+.article ol { padding-left: 1.5em; }
+.article ul { list-style: disc; }
+.article ol { list-style: decimal; }
+.article li { margin-top: 0.375em; margin-bottom: 0.375em; }
+.article li::marker { color: var(--article-muted); }
+.article ul ul,
+.article ul ol,
+.article ol ul,
+.article ol ol { margin-top: 0.375em; margin-bottom: 0.375em; }
+
+/* Quotes ------------------------------------------------------------------ */
+.article blockquote {
+  border-left: 3px solid var(--color-accent, var(--article-border));
+  padding-left: 1.25em;
+  color: var(--article-muted);
+  font-style: italic;
+}
+.article blockquote p:last-child { margin-bottom: 0; }
+
+/* Code -------------------------------------------------------------------- */
+.article code {
+  background: var(--article-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.article pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1.25em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.article pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Media ------------------------------------------------------------------- */
+.article img,
+.article video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5em 0;
+}
+.article hr {
+  border: 0;
+  border-top: 1px solid var(--article-border);
+  margin: 2.5em 0;
+}
+
+/* Tables ------------------------------------------------------------------ */
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  display: block;
+  overflow-x: auto;
+}
+.article th,
+.article td {
+  border: 1px solid var(--article-border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.article th {
+  background: var(--article-code-bg);
+  font-weight: 600;
+}
